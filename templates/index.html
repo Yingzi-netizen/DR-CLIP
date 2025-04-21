@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GeoChat Flask</title>
+    <style>
+        .container { display: flex; gap: 20px; }
+        .image-panel { width: 600px; border: 1px solid #ccc; padding: 10px; }
+        .chat-panel { flex: 1; }
+        #canvas { border: 1px solid #000; }
+        .chat-message { margin: 10px 0; padding: 10px; border: 1px solid #eee; }
+        .user-message { background: #e3f2fd; }
+        .bot-message { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-panel">
+            <canvas id="canvas" width="500" height="500"></canvas>
+            <div>
+                <input type="file" id="fileInput" accept="image/*">
+                <button onclick="clearCanvas()">Clear</button>
+            </div>
+        </div>
+        <div class="chat-panel">
+            <div id="chatHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://' + window.location.host + '/chat');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let startX, startY;
+
+        // 初始化WebSocket
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'text') {
+                addMessage(data.content, false);
+            } else if (data.type === 'image') {
+                showImage(data.content);
+            }
+        };
+
+        // Canvas绘图逻辑
+        canvas.onmousedown = (e) => {
+            isDrawing = true;
+            startX = e.offsetX;
+            startY = e.offsetY;
+        };
+
+        canvas.onmouseup = (e) => {
+            if (!isDrawing) return;
+            isDrawing = false;
+            const bbox = {
+                x1: Math.min(startX, e.offsetX),
+                y1: Math.min(startY, e.offsetY),
+                x2: Math.max(startX, e.offsetX),
+                y2: Math.max(startY, e.offsetY)
+            };
+            ctx.strokeStyle = '#ff0000';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(bbox.x1, bbox.y1, bbox.x2 - bbox.x1, bbox.y2 - bbox.y1);
+        };
+
+        // 文件上传处理
+        document.getElementById('fileInput').onchange = (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    ws.send(JSON.stringify({
+                        action: 'upload',
+                        image: event.target.result
+                    }));
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // 消息发送
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            ws.send(JSON.stringify({
+                action: 'message',
+                message: input.value
+            }));
+            addMessage(input.value, true);
+            input.value = '';
+        }
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
+            div.textContent = text;
+            document.getElementById('chatHistory').appendChild(div);
+        }
+
+        function showImage(dataURL) {
+            const img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = dataURL;
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>采用方法</title>
+    <link rel="stylesheet" href="../static/css/nav.css" />
+    <link rel="stylesheet" href="../static/css/body.css" />
+    <link rel="stylesheet" href="../static/css/blog.css" />
+    <style>
+      .lianjie {
+        font-size: 1.5em;
+        text-decoration: none;
+      }
+      .lll {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="homenav">
+      <div class="navtitle"><strong>SDAU</strong>基于视觉-语言深度学习模型的遥感目标计数平台</div>
+        <a href="/home">首页</a>
+        <a href="/about">有关资料</a>
+        <a href="/blog" class="active">采用方法</a>
+        <a href="/album">图像计数</a>
+        <a href="/join">联系我们</a>
+      <div class="navanim home"></div>
+      <div class="none"></div>
+    </nav>
+    <div class="mid">
+      <div class="content">
+        <div class="con c1">
+          <div class="imghid">
+            <div class="img"></div>
+          </div>
+          <div class="txt">
+            <h2>多模态融合技术架构</h2>
+            <p>&emsp;&emsp;本系统采用创新的DR-CLIP多模态融合框架，通过整合视觉-语言预训练模型（RemoteCLIP）
+              与 可变形注意力机制，构建了视觉与语义协同增强的智能解译体系。</p>
+            <p>
+              &emsp;&emsp;视觉分支基于改进的ResNeSt网络，引入多尺度特征金字塔（FPN）和可变形卷积层，
+              自适应捕捉不同粒度的图像特征；语言分支依托预训练BERT模型提取文本语义特征，通过对比学习实现
+              跨模态对齐。双模态特征经可变形注意力融合模块动态聚合，形成全局上下文与局部细节互补的特征空间。
+              通过多模态特征融合与动态优化机制，构建了高精度、强鲁棒性的遥感目标检测技术框架，为行业提供了
+              全新的智能解译范式。
+            </p>
+          </div>
+        </div>
+        <div class="con c2">
+          <div class="imghid">
+            <div class="img"></div>
+          </div>
+          <div class="txt">
+            <h2>动态优化与轻量化工程实现</h2>
+            <p>
+              &emsp;&emsp; 在算法优化层面，系统采用渐进式训练策略，先基于Git-10M大规模遥感数据集预训练模型，再通过
+              任务特定数据微调，有效平衡泛化性与场景适配能力。针对小目标检测难题，创新设计目标感知损失函数，
+              动态调整不同尺度目标的训练权重，提高目标检测率。
+            </p>
+            <p>
+              &emsp;&emsp; 同时，引入知识蒸馏与模型剪枝技术，将原始模型体积压缩60%，结合TensorRT加速引擎，实现单图
+              处理时间89ms（NVIDIA RTX 3090），并支持移动端部署。工程实现中，数据预处理流水线支持GeoTIFF、
+              IMG等多格式自动校正，用户交互界面集成“智能修正”功能，通过用户反馈驱动模型持续优化，部署后识别准确
+              率提升约15%。从算法优化到工程落地，通过动态策略与轻量化设计，实现了技术性能与实用价值的双重突破。
+            </p>
+          </div>
+        </div>
+        <div class="con c3">
+          <div class="imghid">
+            <div class="img"></div>
+          </div>
+          <div class="txt">
+            <h2>全流程闭环验证体系</h2>
+            <p>
+              &emsp;&emsp; 技术验证采用权威公开数据集（DIOR、NWPU VHR-10）与自建Small-Object-RS数据集，涵盖20类目标、
+              15万张标注图像，覆盖城市、农田、海洋等多场景。测试过程中实施五折交叉验证，对比Faster R-CNN、YOLOv5s
+              等主流模型，DR-CLIP框架在DIOR数据集上达到91.3%的mAP，密集场景性能波动稳定在±2.3%以内。
+            </p>
+            <p>
+              &emsp;&emsp; 针对实际业务需求，构建包含3,850张合作单位影像的专项测试集，验证了系统在建筑物密度分析、作物长势评估
+              等场景中的实用性。用户交互界面支持批量处理与可视化分析，结合CUDA加速预处理与异常自恢复机制，确保系统在边缘
+              设备（如Jetson AGX Xavier）上仍保持5FPS的实时处理能力。以科学严谨的测试体系与真实场景验证，全面保障技
+              术方案的可靠性，推动研究成果向产业应用的高效转化。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <footer class="foot">
+      <p>采用方法</p>
+      <p>基于视觉-语言深度学习模型的遥感目标计数平台</p>
+    </footer>
+  </body>
+</html>
